@@ -18,7 +18,7 @@ associated to a residue.
 The fields are as follows:
 | Field Name   | Field Type     | Description                        |
 | ---          | ---            | ---                                |
-| residue      | AbstractString | The 3 letter residue name          |
+| name         | AbstractString | The 3 letter residue name          |
 | ss_type      | Char           | The one letter secondary structure |
 | ss_type_full | AbstractString | Full SS name                       |
 | phi          | Float64        | The phi                            |
@@ -33,7 +33,7 @@ The following Secondary Structures are taken into account:
 | T   | Turn        |
 """
 type SSDataResidue
-    residue      :: AbstractString
+    name         :: AbstractString
     ss_type      :: Char
     ss_type_full :: AbstractString
     phi          :: Float64
