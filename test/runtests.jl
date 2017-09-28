@@ -9,3 +9,7 @@ data = stride_run("1crn.pdb")
 @test data.chain[1].ss_type == 'C'
 @test data.chain[2].ss_type == 'E'
 @test data.chain[7].ss_type_full == "AlphaHelix"
+
+if isfile("1crn.pdb")
+    rm("1crn.pdb")
+end
