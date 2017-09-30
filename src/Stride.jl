@@ -25,12 +25,16 @@ The fields are as follows:
 | psi          | Float64        | and psi dihedral angle             |
 | area         | Float64        | Solvent accessible area            |
 
-The following Secondary Structures are taken into account:
-| --- | ---         |
-| H   | Alpha Helix |
-| E   | Beta Strand |
-| C   | Coil        |
-| T   | Turn        |
+The following Secondary Structures are defined using the [DSSP8 standard](https://zhanglab.ccmb.med.umich.edu/literature/dssp.pdf) and defined as follows:
+| --- | ---            |
+| H   | Alpha Helix    |
+| B   | Beta Bridge    |
+| E   | Strand         |
+| T   | H Bounded Turn |
+| I   | Pi Helix       |
+| G   | 3/10 Helix     |
+| S   | Bend           |
+| C   | Random Coil    |
 """
 type SSDataResidue
     name         :: AbstractString
