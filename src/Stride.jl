@@ -53,16 +53,16 @@ type SSData
     chain :: Array{SSDataResidue, 1}
 end
 
-stride_guts = Stride_guts("", true)
+stride_state = Stride_guts("", true)
 
 """
-    stride_run(in_path :: AbstractString)
+    stride_run(in_path :: AbstractString; out_path::AbstractString="")
 
-Runs Stride for a given pdb file,
-the return is a SSData object
+Runs Stride for a given pdb file. if out_path is set then the temporary
+Stride file generated will be kept. The function returns a SSData object.
 """
-function stride_run(in_path :: AbstractString)
-    if length(stride_guts.stride_path) == 0
+function stride_run(in_path :: AbstractString; out_path::AbstractString="")
+    if length(stride_state.stride_path) == 0
         if exists_in_path("stride")
             stride_path = "stride"
         else
@@ -70,10 +70,14 @@ function stride_run(in_path :: AbstractString)
                   " or run stride_update_path(\"pathtostride\")")
         end
     else
-        stride_path = stride_guts.stride_path
+        stride_path = stride_state.stride_path
     end
 
-    out_path = randstring(32)
+    if out_path == ""
+        out_path = tempname()
+    else
+        stride_state.delete_tmp_files = false
+    end
 
     args = [in_path, "-f$(out_path)"]
     cmd_string = `$(stride_path) $args`
@@ -81,7 +85,7 @@ function stride_run(in_path :: AbstractString)
 
     ss = stride_parse(out_path)
 
-    if stride_guts.delete_tmp_files
+    if stride_state.delete_tmp_files
         rm(out_path)
     end
 
@@ -95,7 +99,7 @@ stride_update_path can be used to change the path where the package will
 look for the Stride binary.
 """
 function stride_update_path(path :: AbstractString)
-    stride_guts.stride_path = path
+    stride_state.stride_path = path
 end
 
 """
@@ -105,7 +109,7 @@ stride_delete_tmp_files recieves a boolean value that determines if the tempfile
 will be deleted after use. Default option is to delete it.
 """
 function stride_delete_tmp_files(delete :: Bool)
-    stride_guts.delete_tmp_files = delete
+    stride_state.delete_tmp_files = delete
 end
 
 """
